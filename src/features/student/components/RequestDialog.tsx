@@ -32,6 +32,7 @@ export default function RequestDialog({ listing, open, onClose }: RequestDialogP
 			open={open}
 			onClose={onClose}
 			title="Request this book"
+			className="student-sheet"
 			description={`${listing.seller.full_name} will accept or decline. Then you agree in the chat where and when to meet on campus.`}
 		>
 			<RequestForm listing={listing} onDone={onClose} />

@@ -38,9 +38,14 @@ export default function MessageComposer({ conversationId }: { conversationId: nu
 				value={body}
 				onChange={(event) => setBody(event.target.value)}
 				onKeyDown={handleKeyDown}
-				className="max-h-32 min-h-10 resize-none"
+				className="max-h-32 min-h-11 resize-none text-base md:min-h-10 md:text-body-md"
 			/>
-			<IconButton type="submit" label="Send" disabled={!text || send.isPending}>
+			<IconButton
+				type="submit"
+				label="Send"
+				className="max-md:size-11"
+				disabled={!text || send.isPending}
+			>
 				<SendHorizontal />
 			</IconButton>
 		</form>

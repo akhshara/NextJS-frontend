@@ -46,13 +46,14 @@ export default function CampusListings() {
 					<Text as="h2" id="campus-title" variant="headline-md">
 						Available on campus
 					</Text>
-					<Text tone="muted">
+					<Text tone="muted" className="hidden md:block">
 						Books students are selling, swapping or giving away. Yours are marked.
 					</Text>
 				</div>
-				<div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+				<div className="flex flex-col-reverse gap-3 md:flex-row md:items-center">
 					<FilterChips
 						label="Listing type"
+						className="max-md:[&>button]:h-11"
 						options={listingTypeFilters}
 						value={listingType}
 						onChange={(value) => {
@@ -67,7 +68,7 @@ export default function CampusListings() {
 							setSearch(event.target.value);
 							setPage(1);
 						}}
-						className="sm:w-72"
+						className="max-md:h-11 max-md:text-base md:w-72"
 					/>
 				</div>
 			</div>
@@ -85,7 +86,7 @@ export default function CampusListings() {
 					/>
 				) : (
 					<>
-						<ul className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+						<ul className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
 							{listings.map((listing) => (
 								<li key={listing.id}>
 									<CampusListing listing={listing} />

@@ -5,9 +5,9 @@ import { useSearchParams } from "next/navigation";
 
 import EmptyState from "@/components/feedback/EmptyState";
 import QueryState from "@/components/feedback/QueryState";
-import PageHeader from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Text } from "@/components/ui/typography";
 import { useStudent } from "@/features/student/session";
 import { cn } from "@/lib/utils/utils";
 
@@ -23,14 +23,21 @@ export default function MessagesView() {
 
 	return (
 		<>
-			<PageHeader
-				title="Messages"
-				description="Talk to sellers and buyers, and agree where and when to hand books over on campus."
-			/>
-			<Card className="h-[calc(100dvh-16rem)] min-h-[28rem] flex-row gap-0 overflow-hidden py-0">
+			<header className={selected ? "hidden lg:block" : undefined}>
+				<Text as="h1" variant="headline-md" className="font-bold text-primary md:text-headline-lg">
+					Messages
+				</Text>
+			</header>
+			<Card
+				className={cn(
+					"flex-row gap-0 overflow-hidden rounded-2xl py-0 shadow-none lg:h-[calc(100dvh-12rem)] lg:min-h-[28rem] lg:rounded-xl lg:shadow-sm",
+					selected &&
+						"max-lg:min-h-56 max-lg:h-[calc(100dvh-6rem-env(safe-area-inset-top))] max-md:h-[calc(100dvh-5.5rem-env(safe-area-inset-top)-var(--student-bottom-bar))]",
+				)}
+			>
 				<div
 					className={cn(
-						"w-full flex-col overflow-y-auto border-r lg:flex lg:w-80 lg:shrink-0",
+						"w-full flex-col overflow-y-auto lg:flex lg:border-r lg:w-80 lg:shrink-0",
 						selected ? "hidden" : "flex",
 					)}
 				>

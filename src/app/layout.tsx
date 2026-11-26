@@ -19,7 +19,11 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 	variable: "--font-plus-jakarta-sans",
 });
 
-export const viewport: Viewport = { themeColor: "#003262" };
+export const viewport: Viewport = {
+	themeColor: "#003262",
+	viewportFit: "cover",
+	interactiveWidget: "resizes-content",
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
 	return (

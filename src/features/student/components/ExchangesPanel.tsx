@@ -53,13 +53,17 @@ export default function ExchangesPanel() {
 	const total = query.data?.count ?? 0;
 
 	return (
-		<Card aria-labelledby="exchanges-title" className="gap-0 py-0">
-			<div className="flex flex-wrap items-center justify-between gap-3 border-b p-4">
+		<Card
+			aria-labelledby="exchanges-title"
+			className="gap-0 rounded-2xl py-0 shadow-none md:rounded-xl md:shadow-sm"
+		>
+			<div className="flex flex-col gap-2 border-b p-4 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-3">
 				<Text as="h2" id="exchanges-title" variant="headline-sm">
 					Exchanges
 				</Text>
 				<FilterChips
 					label="Exchanges"
+					className="max-md:grid max-md:grid-cols-3 max-md:gap-1 max-md:rounded-xl max-md:bg-muted max-md:p-1 max-md:[&>button]:h-11 max-md:[&>button]:justify-center max-md:[&>button]:gap-1 max-md:[&>button]:rounded-lg max-md:[&>button]:border-0 max-md:[&>button]:px-1"
 					value={group}
 					onChange={(value) => {
 						setChosen(value);
@@ -75,12 +79,17 @@ export default function ExchangesPanel() {
 			<QueryState isPending={query.isPending} error={query.error} onRetry={query.refetch} />
 			{query.isSuccess &&
 				(exchanges.length === 0 ? (
-					<EmptyState icon={Inbox} title={groupInfo[group].empty} hint={groupInfo[group].hint} />
+					<EmptyState
+						icon={Inbox}
+						title={groupInfo[group].empty}
+						hint={groupInfo[group].hint}
+						className="max-md:py-6"
+					/>
 				) : (
 					<>
 						<ul className="space-y-3 p-4">
 							{exchanges.map((exchange) => (
-								<li key={exchange.id}>
+								<li key={exchange.id} className="max-md:[&_button]:min-h-11">
 									<ExchangeCard exchange={exchange} />
 								</li>
 							))}
