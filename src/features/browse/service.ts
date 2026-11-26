@@ -5,14 +5,19 @@ import type { BrowseListing, BrowseQuery } from "./types";
 
 const LISTINGS = "/api/listings/";
 
-export const browseService = {
-	/** Available listings, newest first. Works signed out. */
-	list: ({ search, listing_type, page }: BrowseQuery) => {
-		const params = new URLSearchParams({ page: String(page), page_size: String(BROWSE_PAGE_SIZE) });
-		if (search) params.set("search", search);
-		if (listing_type) params.set("listing_type", listing_type);
-		return requestApi<Paginated<BrowseListing>>(`${LISTINGS}?${params}`);
-	},
+export function browseListEndpoint(
+	{ search, listing_type, page }: BrowseQuery,
+	pageSize = BROWSE_PAGE_SIZE,
+) {
+	const params = new URLSearchParams({ page: String(page), page_size: String(pageSize) });
+	if (search) params.set("search", search);
+	if (listing_type) params.set("listing_type", listing_type);
+	return `${LISTINGS}?${params}`;
+}
 
-	listing: (id: number) => requestApi<BrowseListing>(`${LISTINGS}${id}/`),
+export const browseListingEndpoint = (id: number) => `${LISTINGS}${id}/`;
+
+export const browseService = {
+	list: (query: BrowseQuery) => requestApi<Paginated<BrowseListing>>(browseListEndpoint(query)),
+	listing: (id: number) => requestApi<BrowseListing>(browseListingEndpoint(id)),
 };

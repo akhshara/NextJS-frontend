@@ -8,7 +8,14 @@ import LandingHeader from "@/components/landing/LandingHeader";
 import ListingTypes from "@/components/landing/ListingTypes";
 import SafetySection from "@/components/landing/SafetySection";
 import { SessionProvider } from "@/components/landing/session";
+import { HOME_DESCRIPTION, HOME_TITLE, publicMetadata } from "@/lib/seo/site";
 import { cmsService, type HomeSectionKind } from "@/services/cms.service";
+
+export const metadata = publicMetadata({
+	title: HOME_TITLE,
+	description: HOME_DESCRIPTION,
+	path: "/",
+});
 
 /** The sections, their text, slides and order come from the admin console. */
 export default async function HomePage() {
