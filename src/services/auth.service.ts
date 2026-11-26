@@ -18,14 +18,21 @@ type LoginResponse = { access: string; refresh: string; user: User };
 
 export type RegisterInput = { full_name: string; email: string; password: string };
 
+async function signIn(endpoint: string, body: object, remember: boolean) {
+	const { access, refresh, user } = await requestApi<LoginResponse>(endpoint, {
+		body,
+		anonymous: true,
+	});
+	tokenStorage.set(access, refresh, remember);
+	return user;
+}
+
 export const authService = {
-	login: async (email: string, password: string, remember: boolean) => {
-		const data = await requestApi<LoginResponse>("/api/auth/login/", {
-			body: { email, password },
-		});
-		tokenStorage.set(data.access, data.refresh, remember);
-		return data.user;
-	},
+	login: (email: string, password: string, remember: boolean) =>
+		signIn("/api/auth/login/", { email, password }, remember),
+
+	loginWithGoogle: (idToken: string, remember: boolean) =>
+		signIn("/api/auth/social/google/", { id_token: idToken }, remember),
 
 	logout: async () => {
 		const refresh = tokenStorage.getRefresh();

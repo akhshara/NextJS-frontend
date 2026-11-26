@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { authService } from "@/services/auth.service";
+
 import { ApiRequestError, requestApi, tokenStorage } from "./api-client";
 
 function memoryStorage() {
@@ -53,6 +55,49 @@ describe("tokenStorage", () => {
 });
 
 describe("requestApi token refresh", () => {
+	it.each([
+		["password", () => authService.login("student@university.edu", "password", false)],
+		["Google", () => authService.loginWithGoogle("google-credential", false)],
+	] as const)(
+		"does not send or refresh an existing session when %s sign-in fails",
+		async (_, login) => {
+			tokenStorage.set("old-access", "old-refresh", true);
+			const fetchMock = vi.fn().mockResolvedValue(json(401, { detail: "Credential rejected." }));
+			vi.stubGlobal("fetch", fetchMock);
+
+			await expect(login()).rejects.toThrow("Credential rejected.");
+
+			expect(fetchMock).toHaveBeenCalledTimes(1);
+			expect(fetchMock).toHaveBeenCalledWith(
+				expect.any(String),
+				expect.objectContaining({
+					headers: { Accept: "application/json", "Content-Type": "application/json" },
+				}),
+			);
+			expect(tokenStorage.getRefresh()).toBe("old-refresh");
+		},
+	);
+
+	it.each([true, false])("stores the Google session with remember=%s", async (remember) => {
+		const user = { id: 1, email: "student@university.edu" };
+		const fetchMock = vi
+			.fn()
+			.mockResolvedValue(json(200, { access: "new-access", refresh: "new-refresh", user }));
+		vi.stubGlobal("fetch", fetchMock);
+
+		await expect(authService.loginWithGoogle("google-credential", remember)).resolves.toEqual(user);
+		expect(fetchMock).toHaveBeenCalledWith(
+			expect.stringMatching(/\/api\/auth\/social\/google\/$/),
+			expect.objectContaining({
+				method: "POST",
+				body: JSON.stringify({ id_token: "google-credential" }),
+			}),
+		);
+		expect(tokenStorage.getAccess()).toBe("new-access");
+		expect(tokenStorage.getRefresh()).toBe("new-refresh");
+		expect(tokenStorage.isRemembered()).toBe(remember);
+	});
+
 	it.each([true, false])(
 		"keeps remember=%s after refreshing an expired token",
 		async (remember) => {

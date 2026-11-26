@@ -6,8 +6,6 @@ export const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:800
 const ACCESS_TOKEN_KEY = "aksaraAccessToken";
 const REFRESH_TOKEN_KEY = "aksaraRefreshToken";
 const REFRESH_ENDPOINT = "/api/auth/token/refresh/";
-// Calls that must not trigger a token refresh when they return 401.
-const NO_REFRESH = ["/api/auth/login/", REFRESH_ENDPOINT];
 
 type ApiMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
@@ -16,6 +14,8 @@ export type ApiRequestOptions = {
 	method?: ApiMethod;
 	/** JSON object, or FormData for file uploads. */
 	body?: object;
+	/** Public requests that should run without an existing session. */
+	anonymous?: boolean;
 };
 
 export class ApiRequestError extends Error {
@@ -52,11 +52,11 @@ export const tokenStorage = {
 	},
 };
 
-function send(endpoint: string, { method, body }: ApiRequestOptions) {
+function send(endpoint: string, { method, body, anonymous }: ApiRequestOptions) {
 	const isForm = body instanceof FormData;
 	const headers: Record<string, string> = { Accept: "application/json" };
 	if (body && !isForm) headers["Content-Type"] = "application/json";
-	const token = tokenStorage.getAccess();
+	const token = anonymous ? null : tokenStorage.getAccess();
 	if (token) headers.Authorization = `Bearer ${token}`;
 
 	return fetch(API_URL + endpoint, {
@@ -82,7 +82,12 @@ async function refreshTokens() {
 
 async function sendWithRefresh(endpoint: string, options: ApiRequestOptions) {
 	const response = await send(endpoint, options);
-	if (response.status === 401 && !NO_REFRESH.includes(endpoint) && (await refreshTokens())) {
+	if (
+		response.status === 401 &&
+		!options.anonymous &&
+		endpoint !== REFRESH_ENDPOINT &&
+		(await refreshTokens())
+	) {
 		return send(endpoint, options);
 	}
 	return response;
