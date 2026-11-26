@@ -13,19 +13,27 @@ import { SearchInput } from "@/components/ui/search-input";
 import { listingTypeFilters } from "@/features/listings/labels";
 import ListingCard from "@/features/student/components/ListingCard";
 import { usePageInRange } from "@/hooks/use-page-in-range";
+import type { Paginated } from "@/lib/api/api-client";
 import { formatCount } from "@/lib/utils/format";
 
 import { BROWSE_PAGE_SIZE } from "../constants";
 import { useBrowsePage } from "../queries";
-import { browseListingPath } from "../routes";
-import type { BrowseListing } from "../types";
+import { browseListingPath, browsePath } from "../routes";
+import type { BrowseListing, BrowseQuery } from "../types";
 import { useBrowseQuery } from "../use-browse-query";
 
 /** Every available book, to search and open. */
-export default function BrowseView() {
+export default function BrowseView({
+	initialQuery,
+	initialPage,
+}: {
+	initialQuery: BrowseQuery;
+	initialPage?: Paginated<BrowseListing>;
+}) {
 	const { query, search, setSearch, show } = useBrowseQuery();
 	const setPage = useCallback((page: number) => show({ page }), [show]);
-	const page = useBrowsePage(query);
+	const matchesInitialQuery = browsePath(query) === browsePath(initialQuery);
+	const page = useBrowsePage(query, matchesInitialQuery ? initialPage : undefined);
 	usePageInRange(query.page, setPage, page.error);
 	const listings = page.data?.results ?? [];
 	const total = page.data?.count ?? 0;
@@ -72,6 +80,7 @@ export default function BrowseView() {
 							page={query.page}
 							pageCount={Math.max(1, Math.ceil(total / BROWSE_PAGE_SIZE))}
 							onPageChange={setPage}
+							pageHref={(page) => browsePath({ ...query, page })}
 							summary={formatCount(total, "book")}
 							className="px-0"
 						/>

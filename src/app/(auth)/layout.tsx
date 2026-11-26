@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import AuthShowcase from "@/components/auth/AuthShowcase";
@@ -7,6 +8,8 @@ import Container from "@/components/layout/Container";
 import SiteFooter from "@/components/layout/SiteFooter";
 import SiteHeader from "@/components/layout/SiteHeader";
 import { cmsService } from "@/services/cms.service";
+
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 /**
  * From `lg` up, the form sits in a card beside the showcase panel. Below it the page is a
