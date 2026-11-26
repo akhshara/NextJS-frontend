@@ -19,7 +19,10 @@ export default function StudentDetailView({ studentId }: { studentId: number }) 
 
 	return (
 		<>
-			<TextLink href={STUDENTS_PATH}>
+			<TextLink
+				href={STUDENTS_PATH}
+				className="max-lg:inline-flex max-lg:min-h-11 max-lg:items-center"
+			>
 				<ArrowLeft />
 				Student directory
 			</TextLink>
@@ -28,14 +31,14 @@ export default function StudentDetailView({ studentId }: { studentId: number }) 
 				<div className="grid items-start gap-6 xl:grid-cols-[20rem_minmax(0,1fr)]">
 					<Card
 						aria-label={`${student.full_name} account`}
-						className="gap-6 p-5 xl:sticky xl:top-6"
+						className="gap-5 p-4 lg:gap-6 lg:p-5 xl:sticky xl:top-20"
 					>
 						<StudentIdentity student={student} heading="h1" />
 						<StudentAccountDetails student={student} />
 						<StudentActions student={student} />
 					</Card>
 
-					<div className="min-w-0 space-y-6">
+					<div className="min-w-0 space-y-4 lg:space-y-6">
 						<StudentListings studentId={student.id} />
 						<StudentActivity studentId={student.id} />
 					</div>

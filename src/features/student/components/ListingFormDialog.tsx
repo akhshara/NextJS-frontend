@@ -44,7 +44,7 @@ export default function ListingFormDialog({ open, onClose, listing }: ListingFor
 					? "Changes show to other students straight away."
 					: "Tell classmates which book it is and how you want to pass it on."
 			}
-			className="student-sheet max-w-xl"
+			className="mobile-sheet max-w-xl"
 		>
 			<ListingForm listing={listing} onDone={onClose} />
 		</Dialog>

@@ -6,7 +6,7 @@ import ConsoleNav from "./ConsoleNav";
 
 export default function Sidebar() {
 	return (
-		<aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col gap-8 border-r bg-card px-4 py-6 lg:flex">
+		<aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col gap-8 border-r bg-card px-4 pt-[calc(1.5rem+env(safe-area-inset-top))] pb-[calc(1.5rem+env(safe-area-inset-bottom))] lg:flex">
 			<div className="px-2">
 				<AdminBrand />
 			</div>

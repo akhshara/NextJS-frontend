@@ -54,7 +54,7 @@ function SliderCard({
 						{description}
 					</Text>
 				</div>
-				<Button variant="outlined" size="sm" onClick={onAdd}>
+				<Button variant="outlined" size="sm" className="max-sm:h-11" onClick={onAdd}>
 					<Plus />
 					Add slide
 				</Button>
@@ -71,11 +71,15 @@ function SliderCard({
 			) : (
 				<ol className="divide-y">
 					{slides.map((slide, index) => (
-						<li key={slide.id} className="flex flex-wrap items-center gap-4 p-4">
-							<div className="flex flex-col">
+						<li
+							key={slide.id}
+							className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 p-4 sm:flex sm:flex-wrap sm:gap-4"
+						>
+							<div className="col-start-2 row-start-2 flex divide-x justify-self-end sm:flex-col sm:divide-x-0">
 								<IconButton
 									variant="ghost"
 									size="icon-sm"
+									className="max-sm:size-11"
 									label={`Move "${slide.caption}" up`}
 									disabled={index === 0 || busy}
 									onClick={() => onMove(moveItem(slides, index, index - 1))}
@@ -85,6 +89,7 @@ function SliderCard({
 								<IconButton
 									variant="ghost"
 									size="icon-sm"
+									className="max-sm:size-11"
 									label={`Move "${slide.caption}" down`}
 									disabled={index === slides.length - 1 || busy}
 									onClick={() => onMove(moveItem(slides, index, index + 1))}
@@ -92,7 +97,7 @@ function SliderCard({
 									<ArrowDown />
 								</IconButton>
 							</div>
-							<div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg bg-muted">
+							<div className="relative col-start-1 row-start-1 h-14 w-20 shrink-0 sm:h-16 sm:w-28 overflow-hidden rounded-lg bg-muted">
 								<Image
 									src={slide.image}
 									alt={slide.alt_text}
@@ -102,8 +107,10 @@ function SliderCard({
 									className="object-cover"
 								/>
 							</div>
-							<div className="min-w-48 flex-1 space-y-1">
-								<Text variant="label-lg">{slide.caption}</Text>
+							<div className="col-start-2 row-start-1 min-w-0 flex-1 space-y-1 sm:min-w-48">
+								<Text variant="label-lg" className="wrap-anywhere">
+									{slide.caption}
+								</Text>
 								{slide.link && (
 									<a
 										href={slide.link}
@@ -116,7 +123,7 @@ function SliderCard({
 									</a>
 								)}
 							</div>
-							<div className="flex items-center gap-2">
+							<div className="col-span-2 col-start-1 row-start-2 flex min-w-0 items-center gap-2 max-sm:pr-24">
 								<Switch
 									checked={slide.is_published}
 									onCheckedChange={(is_published) => onPublish(slide, is_published)}
@@ -129,6 +136,7 @@ function SliderCard({
 								<IconButton
 									variant="ghost"
 									size="icon-sm"
+									className="max-sm:size-11"
 									label={`Edit "${slide.caption}"`}
 									onClick={() => onEdit(slide)}
 								>

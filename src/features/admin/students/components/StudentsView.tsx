@@ -68,7 +68,12 @@ export default function StudentsView() {
 				title="Student directory"
 				description="Every student account: verification, activity and suspensions."
 				actions={
-					<Button variant="outlined" onClick={exportRoster} disabled={exporting || total === 0}>
+					<Button
+						variant="outlined"
+						className="max-lg:h-11"
+						onClick={exportRoster}
+						disabled={exporting || total === 0}
+					>
 						<Download />
 						{exporting ? "Exporting…" : "Export CSV"}
 					</Button>
@@ -82,11 +87,13 @@ export default function StudentsView() {
 					<div className="grid gap-3 border-b p-4 sm:grid-cols-[2fr_1fr]">
 						<SearchInput
 							placeholder="Search name, email, ID or department"
+							className="max-lg:h-11 max-lg:text-base"
 							value={search}
 							onChange={(event) => changeFilters(() => setSearch(event.target.value))}
 						/>
 						<Select
 							aria-label="Show"
+							className="max-lg:h-11 max-lg:text-base"
 							value={filter}
 							onChange={(event) =>
 								changeFilters(() => setFilter(event.target.value as StudentFilter))
@@ -119,7 +126,11 @@ export default function StudentsView() {
 						))}
 				</Card>
 
-				{profileId !== null && <StudentProfile studentId={profileId} />}
+				{profileId !== null && (
+					<div className="hidden lg:block">
+						<StudentProfile studentId={profileId} />
+					</div>
+				)}
 			</div>
 		</>
 	);

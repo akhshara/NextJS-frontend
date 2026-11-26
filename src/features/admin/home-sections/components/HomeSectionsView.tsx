@@ -59,7 +59,7 @@ function SectionEditor({ sections: savedSections }: { sections: HomeSection[] })
 						<li
 							key={section.kind}
 							className={cn(
-								"flex flex-wrap items-center gap-x-4 gap-y-3 p-4",
+								"grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 p-4 sm:flex sm:flex-wrap sm:gap-x-4",
 								!section.is_enabled && "bg-muted/50",
 							)}
 						>
@@ -67,6 +67,7 @@ function SectionEditor({ sections: savedSections }: { sections: HomeSection[] })
 								<IconButton
 									variant="ghost"
 									size="icon-sm"
+									className="max-sm:size-11"
 									label={`Move ${label} up`}
 									disabled={index === 0}
 									onClick={() => setSections(moveItem(sections, index, index - 1))}
@@ -76,6 +77,7 @@ function SectionEditor({ sections: savedSections }: { sections: HomeSection[] })
 								<IconButton
 									variant="ghost"
 									size="icon-sm"
+									className="max-sm:size-11"
 									label={`Move ${label} down`}
 									disabled={index === sections.length - 1}
 									onClick={() => setSections(moveItem(sections, index, index + 1))}
@@ -99,8 +101,13 @@ function SectionEditor({ sections: savedSections }: { sections: HomeSection[] })
 								</Text>
 							</div>
 							{/* Wraps under the label on narrow screens. */}
-							<div className="ml-auto flex items-center gap-4">
-								<Button variant="outlined" size="sm" onClick={() => setEditing(section.kind)}>
+							<div className="col-span-2 flex flex-wrap items-center gap-3 sm:ml-auto sm:gap-4">
+								<Button
+									variant="outlined"
+									size="sm"
+									className="max-sm:h-11"
+									onClick={() => setEditing(section.kind)}
+								>
 									<PenLine />
 									Edit text
 								</Button>
