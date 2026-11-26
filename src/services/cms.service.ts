@@ -30,7 +30,7 @@ const REVALIDATE_SECONDS = 60;
 export const SERVER_API_URL = (process.env.API_INTERNAL_URL || API_URL).replace(/\/$/, "");
 
 /** The API builds media links from the address it was called on; browsers need the public one. */
-const toPublicUrl = (url: string) =>
+export const toPublicUrl = (url: string) =>
 	url.startsWith(SERVER_API_URL) ? API_URL + url.slice(SERVER_API_URL.length) : url;
 
 const isHomeSectionKind = (kind: string): kind is HomeSectionKind =>

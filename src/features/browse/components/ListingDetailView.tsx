@@ -18,7 +18,6 @@ import {
 } from "@/features/listings/labels";
 import BookCover from "@/features/student/components/BookCover";
 import { ApiRequestError } from "@/lib/api/api-client";
-import { formatDate } from "@/lib/utils/format";
 import { cn } from "@/lib/utils/utils";
 
 import { useBrowseListing } from "../queries";
@@ -26,8 +25,14 @@ import { BROWSE } from "../routes";
 import type { BrowseListing } from "../types";
 import ListingAction from "./ListingAction";
 
-export default function ListingDetailView({ id }: { id: number }) {
-	const query = useBrowseListing(id);
+const dateFormat = new Intl.DateTimeFormat("en-US", {
+	dateStyle: "medium",
+	timeZone: "Asia/Kathmandu",
+});
+const formatDate = (iso: string) => dateFormat.format(new Date(iso));
+
+export default function ListingDetailView({ listing }: { listing: BrowseListing }) {
+	const query = useBrowseListing(listing.id, listing);
 	const notFound = query.error instanceof ApiRequestError && query.error.status === 404;
 
 	return (

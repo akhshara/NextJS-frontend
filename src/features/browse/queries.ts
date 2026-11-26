@@ -1,10 +1,11 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { useSession } from "@/components/landing/session";
 import { listingsKey } from "@/features/listings/keys";
+import type { Paginated } from "@/lib/api/api-client";
 
 import { browseService } from "./service";
-import type { BrowseQuery } from "./types";
+import type { BrowseListing, BrowseQuery } from "./types";
 
 /**
  * Under the listings root, so a request sent from these pages refreshes them. Keyed by the
@@ -23,21 +24,24 @@ function useViewer() {
 	return user === undefined ? undefined : (user?.id ?? null);
 }
 
-export function useBrowsePage(query: BrowseQuery) {
+export function useBrowsePage(query: BrowseQuery, initialData?: Paginated<BrowseListing>) {
 	const viewer = useViewer();
 	return useQuery({
 		queryKey: browseKeys.page(viewer ?? null, query),
 		queryFn: () => browseService.list(query),
 		enabled: viewer !== undefined,
-		placeholderData: keepPreviousData,
+		initialData: viewer == null ? initialData : undefined,
+		initialDataUpdatedAt: 0,
 	});
 }
 
-export function useBrowseListing(id: number) {
+export function useBrowseListing(id: number, initialData?: BrowseListing) {
 	const viewer = useViewer();
 	return useQuery({
 		queryKey: browseKeys.listing(viewer ?? null, id),
 		queryFn: () => browseService.listing(id),
+		initialData: viewer == null ? initialData : undefined,
+		initialDataUpdatedAt: 0,
 		enabled: viewer !== undefined,
 	});
 }
