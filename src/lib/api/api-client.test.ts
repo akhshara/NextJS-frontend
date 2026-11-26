@@ -168,6 +168,7 @@ describe("requestApi errors", () => {
 		const error = await requestApi("/api/x/").catch((caught: unknown) => caught);
 
 		expect(error).toBeInstanceOf(ApiRequestError);
+		expect((error as ApiRequestError).message).toBe("Too long. Required.");
 		expect((error as ApiRequestError).fields).toEqual({
 			title: ["Too long."],
 			"items.1.text": ["Required."],

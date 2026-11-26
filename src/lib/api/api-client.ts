@@ -125,7 +125,8 @@ function toApiError(status: number, data: Record<string, unknown> | null) {
 			: "Please check the highlighted fields.";
 	// A view's plain `ValidationError("...")` arrives as a bare list, collected under "".
 	const general = fields.non_field_errors ?? fields[""];
-	const message = detail ?? general?.join(" ") ?? fallback;
+	const message =
+		detail || general?.join(" ") || Object.values(fields).flat().join(" ") || fallback;
 	return new ApiRequestError(message, status, fields);
 }
 
