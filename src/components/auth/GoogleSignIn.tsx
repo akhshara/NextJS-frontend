@@ -10,7 +10,10 @@ type GoogleIdentity = {
 		client_id: string;
 		callback: (response: { credential: string }) => void;
 	}): void;
-	renderButton(parent: HTMLElement, options: { type: "standard"; size: "large" }): void;
+	renderButton(
+		parent: HTMLElement,
+		options: { type: "standard"; size: "large"; text: "continue_with"; width: string },
+	): void;
 };
 
 type GoogleWindow = Window & { google?: { accounts: { id: GoogleIdentity } } };
@@ -37,10 +40,28 @@ export default function GoogleSignIn({ disabled, onCredential }: GoogleSignInPro
 				if (active) receiveCredential(credential);
 			},
 		});
-		identity.renderButton(parent, { type: "standard", size: "large" });
+		let renderedWidth = 0;
+		const renderButton = () => {
+			// Google caps the rendered button at 400px.
+			const width = Math.min(parent.clientWidth, 400);
+			if (!width || width === renderedWidth) return;
+
+			parent.replaceChildren();
+			identity.renderButton(parent, {
+				type: "standard",
+				size: "large",
+				text: "continue_with",
+				width: String(width),
+			});
+			renderedWidth = width;
+		};
+		renderButton();
+		const observer = new ResizeObserver(renderButton);
+		observer.observe(parent);
 
 		return () => {
 			active = false;
+			observer.disconnect();
 			parent.replaceChildren();
 		};
 	}, [identity]);
@@ -55,7 +76,7 @@ export default function GoogleSignIn({ disabled, onCredential }: GoogleSignInPro
 	}
 
 	return (
-		<div className="mt-5 flex flex-col items-center gap-3">
+		<div className="mt-5">
 			<Script
 				src="https://accounts.google.com/gsi/client"
 				onReady={handleScriptLoad}
@@ -67,7 +88,11 @@ export default function GoogleSignIn({ disabled, onCredential }: GoogleSignInPro
 					Google sign-in is unavailable. You can sign in with email.
 				</p>
 			) : (
-				<div ref={container} inert={disabled} />
+				<div
+					ref={container}
+					inert={disabled}
+					className="mx-auto w-full max-w-[400px] inert:opacity-50"
+				/>
 			)}
 		</div>
 	);
