@@ -104,6 +104,7 @@ export default function SectionContentDialog({
 
 	return (
 		<Dialog
+			className="mobile-sheet"
 			open
 			onClose={onClose}
 			title={`Edit "${label}"`}
@@ -149,7 +150,7 @@ export default function SectionContentDialog({
 						</Text>
 					)}
 				</div>
-				<DialogFooter className="justify-between">
+				<DialogFooter className="flex-wrap justify-between max-sm:px-4">
 					{isCustom ? (
 						<Button type="button" variant="ghost" onClick={handleReset} disabled={reset.isPending}>
 							<RotateCcw />
@@ -158,7 +159,7 @@ export default function SectionContentDialog({
 					) : (
 						<span />
 					)}
-					<div className="flex gap-2">
+					<div className="ml-auto flex gap-2">
 						<Button type="button" variant="ghost" onClick={onClose}>
 							Cancel
 						</Button>

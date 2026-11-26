@@ -68,6 +68,7 @@ export default function SlideFormDialog({ open, onClose, slide, slider }: SlideF
 
 	return (
 		<Dialog
+			className="mobile-sheet"
 			open={open}
 			onClose={close}
 			title={slide ? "Edit slide" : "Add slide"}
@@ -157,7 +158,7 @@ export default function SlideFormDialog({ open, onClose, slide, slider }: SlideF
 						</p>
 					)}
 				</div>
-				<DialogFooter className="justify-between">
+				<DialogFooter className="flex-wrap justify-between max-sm:px-4">
 					{slide ? (
 						<Button
 							type="button"
@@ -172,7 +173,7 @@ export default function SlideFormDialog({ open, onClose, slide, slider }: SlideF
 					) : (
 						<span />
 					)}
-					<div className="flex gap-2">
+					<div className="ml-auto flex gap-2">
 						<Button type="button" variant="ghost" onClick={close}>
 							Cancel
 						</Button>

@@ -31,7 +31,7 @@ export default function StudentActions({ student }: { student: Student }) {
 	}
 
 	return (
-		<div className="space-y-2 border-t pt-5">
+		<div className="space-y-2 border-t pt-5 max-lg:[&_a]:min-h-11 max-lg:[&_button]:min-h-11">
 			<Button asChild className="w-full">
 				<a href={`mailto:${student.email}`}>
 					<Mail />
@@ -49,7 +49,7 @@ export default function StudentActions({ student }: { student: Student }) {
 					Mark unverified
 				</Button>
 			) : (
-				<div className="grid grid-cols-2 gap-2">
+				<div className="grid gap-2 min-[380px]:grid-cols-2">
 					<Button
 						variant="outlined"
 						onClick={() => resend.mutate(student.id)}

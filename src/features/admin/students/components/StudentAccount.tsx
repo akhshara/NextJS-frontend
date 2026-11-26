@@ -13,7 +13,7 @@ function Detail({ label, value }: { label: string; value: string }) {
 			<Text as="dt" variant="body-sm" tone="muted">
 				{label}
 			</Text>
-			<Text as="dd" variant="label-md" className="text-right">
+			<Text as="dd" variant="label-md" className="min-w-0 wrap-anywhere text-right">
 				{value || "—"}
 			</Text>
 		</div>
@@ -43,10 +43,10 @@ export function StudentIdentity({
 		<div className="flex items-start gap-4">
 			<Avatar name={student.full_name} size="lg" />
 			<div className="min-w-0 flex-1 space-y-1">
-				<Text as={heading} variant="headline-sm" className="text-primary">
+				<Text as={heading} variant="headline-sm" className="wrap-anywhere text-primary">
 					{student.full_name}
 				</Text>
-				<Text variant="body-sm" tone="muted" className="truncate">
+				<Text variant="body-sm" tone="muted" className="wrap-anywhere">
 					{student.email}
 				</Text>
 				<StudentStatus student={student} />

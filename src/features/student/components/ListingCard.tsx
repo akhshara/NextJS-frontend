@@ -9,7 +9,7 @@ import BookCover, { coverOf } from "./BookCover";
 
 interface ListingCardProps {
 	listing: Omit<Listing, "seller">;
-	/** Over the cover's top right corner, e.g. the listing's status. */
+	/** Listing status or ownership. */
 	badge?: ReactNode;
 	/** Under the price, e.g. a person's name or a hint. */
 	meta?: ReactNode;
@@ -20,23 +20,21 @@ interface ListingCardProps {
 export default function ListingCard({ listing, badge, meta, actions }: ListingCardProps) {
 	const { book } = listing;
 	return (
-		<article className="flex h-full flex-col overflow-hidden rounded-xl border bg-card shadow-sm">
-			<div className="relative bg-muted p-4">
+		<article className="grid h-full grid-cols-[auto_minmax(0,1fr)] overflow-hidden rounded-2xl border bg-card md:flex md:flex-col md:rounded-xl md:shadow-sm">
+			<div className="relative p-3 pr-0 md:bg-muted md:p-4">
 				<BookCover
 					src={coverOf(listing)}
-					sizes="(min-width: 1024px) 220px, 45vw"
-					className="mx-auto w-full max-w-44 shadow-md"
+					sizes="(min-width: 768px) 176px, 72px"
+					className="w-18 md:mx-auto md:w-full md:max-w-44 md:shadow-md"
 				/>
-				<Badge
-					tone="neutral"
-					size="sm"
-					className="absolute top-3 left-3 bg-card text-foreground shadow-sm"
-				>
-					{conditionLabels[listing.condition]}
-				</Badge>
-				{badge && <div className="absolute top-3 right-3">{badge}</div>}
 			</div>
-			<div className="flex flex-1 flex-col gap-1 p-4">
+			<div className="flex min-w-0 flex-1 flex-col gap-1 px-3 py-3 md:p-4">
+				<div className="flex flex-wrap items-center gap-1 pb-1">
+					<Badge tone="neutral" size="sm">
+						{conditionLabels[listing.condition]}
+					</Badge>
+					{badge}
+				</div>
 				{(listing.course_code || book.edition) && (
 					<Text variant="label-sm" tone="muted" className="flex flex-wrap gap-2 uppercase">
 						{listing.course_code && (
@@ -55,7 +53,7 @@ export default function ListingCard({ listing, badge, meta, actions }: ListingCa
 						{book.authors}
 					</Text>
 				)}
-				<div className="mt-auto flex items-baseline justify-between gap-2 pt-3">
+				<div className="mt-auto flex flex-wrap items-baseline gap-x-2 pt-1 md:justify-between md:pt-3">
 					<Text as="span" variant="headline-sm" className="text-primary tabular-nums">
 						{listingPrice(listing)}
 					</Text>
@@ -66,7 +64,9 @@ export default function ListingCard({ listing, badge, meta, actions }: ListingCa
 					)}
 				</div>
 			</div>
-			<div className="flex gap-2 border-t p-3 [&>*]:flex-1">{actions}</div>
+			<div className="col-span-2 flex flex-wrap gap-2 border-t p-2.5 [&>*]:flex-1 max-md:[&_button]:min-h-11 max-md:[&_a]:min-h-11 md:p-3">
+				{actions}
+			</div>
 		</article>
 	);
 }

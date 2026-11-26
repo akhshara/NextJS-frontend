@@ -47,7 +47,7 @@ export default function StudentListings({ studentId }: { studentId: number }) {
 				</Text>
 				<Select
 					aria-label="Status"
-					className="w-44"
+					className="w-44 max-lg:h-11 max-lg:text-base"
 					value={status}
 					onChange={(event) => {
 						setStatus(event.target.value as StudentListingQuery["status"]);
@@ -76,47 +76,77 @@ export default function StudentListings({ studentId }: { studentId: number }) {
 					/>
 				) : (
 					<>
-						<Table>
-							<TableHeader>
-								<TableRow>
-									<TableHead>Book</TableHead>
-									<TableHead>Condition</TableHead>
-									<TableHead>Price</TableHead>
-									<TableHead>Requests</TableHead>
-									<TableHead>Status</TableHead>
-									<TableHead>Listed</TableHead>
-								</TableRow>
-							</TableHeader>
-							<TableBody>
-								{listings.map((listing) => (
-									<TableRow key={listing.id}>
-										<TableCell className="min-w-56">
-											<Text as="span" variant="label-lg" className="block">
-												{listing.title}
-											</Text>
-											<Text as="span" variant="body-sm" tone="muted" className="block">
-												{[listing.authors, listing.course_code].filter(Boolean).join(" · ") || "—"}
-											</Text>
-										</TableCell>
-										<TableCell className="whitespace-nowrap">
-											{conditionLabels[listing.condition]}
-										</TableCell>
-										<TableCell className="whitespace-nowrap tabular-nums">
-											{listingPrice(listing)}
-										</TableCell>
-										<TableCell className="tabular-nums">{listing.request_count}</TableCell>
-										<TableCell>
-											<Badge tone={listingStatusTones[listing.status]} size="sm" dot>
-												{listingStatusLabels[listing.status]}
-											</Badge>
-										</TableCell>
-										<TableCell className="whitespace-nowrap text-muted-foreground">
-											{formatDate(listing.created_at)}
-										</TableCell>
+						<ul className="divide-y lg:hidden">
+							{listings.map((listing) => (
+								<li key={listing.id} className="space-y-2 px-4 py-3">
+									<div className="flex flex-wrap items-start justify-between gap-2">
+										<Text
+											as="h3"
+											variant="label-lg"
+											className="min-w-36 flex-1 wrap-anywhere font-semibold"
+										>
+											{listing.title}
+										</Text>
+										<Badge tone={listingStatusTones[listing.status]} size="sm" dot>
+											{listingStatusLabels[listing.status]}
+										</Badge>
+									</div>
+									<Text variant="body-sm" tone="muted" className="wrap-anywhere">
+										{[listing.authors, listing.course_code, conditionLabels[listing.condition]]
+											.filter(Boolean)
+											.join(" · ")}
+									</Text>
+									<Text variant="body-sm" tone="muted">
+										{listingPrice(listing)} · {formatCount(listing.request_count, "request")} ·{" "}
+										{formatDate(listing.created_at)}
+									</Text>
+								</li>
+							))}
+						</ul>
+						<div className="hidden lg:block">
+							<Table>
+								<TableHeader>
+									<TableRow>
+										<TableHead>Book</TableHead>
+										<TableHead>Condition</TableHead>
+										<TableHead>Price</TableHead>
+										<TableHead>Requests</TableHead>
+										<TableHead>Status</TableHead>
+										<TableHead>Listed</TableHead>
 									</TableRow>
-								))}
-							</TableBody>
-						</Table>
+								</TableHeader>
+								<TableBody>
+									{listings.map((listing) => (
+										<TableRow key={listing.id}>
+											<TableCell className="min-w-56">
+												<Text as="span" variant="label-lg" className="block">
+													{listing.title}
+												</Text>
+												<Text as="span" variant="body-sm" tone="muted" className="block">
+													{[listing.authors, listing.course_code].filter(Boolean).join(" · ") ||
+														"—"}
+												</Text>
+											</TableCell>
+											<TableCell className="whitespace-nowrap">
+												{conditionLabels[listing.condition]}
+											</TableCell>
+											<TableCell className="whitespace-nowrap tabular-nums">
+												{listingPrice(listing)}
+											</TableCell>
+											<TableCell className="tabular-nums">{listing.request_count}</TableCell>
+											<TableCell>
+												<Badge tone={listingStatusTones[listing.status]} size="sm" dot>
+													{listingStatusLabels[listing.status]}
+												</Badge>
+											</TableCell>
+											<TableCell className="whitespace-nowrap text-muted-foreground">
+												{formatDate(listing.created_at)}
+											</TableCell>
+										</TableRow>
+									))}
+								</TableBody>
+							</Table>
+						</div>
 						<Pagination
 							page={page}
 							pageCount={Math.max(1, Math.ceil(total / LISTING_PAGE_SIZE))}

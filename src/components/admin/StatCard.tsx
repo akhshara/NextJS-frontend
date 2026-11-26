@@ -28,12 +28,16 @@ export default function StatCard({
 	footnote,
 }: StatCardProps) {
 	return (
-		<div className="flex items-start justify-between gap-4 rounded-xl border bg-card p-5 shadow-sm">
+		<div className="flex items-start justify-between gap-2 rounded-xl border bg-card p-3 lg:gap-4 lg:p-5 lg:shadow-sm">
 			<dl className="min-w-0 space-y-1">
 				<Text as="dt" variant="label-sm" tone="muted" className="uppercase tracking-wider">
 					{label}
 				</Text>
-				<Text as="dd" variant="headline-lg" className="text-primary tabular-nums">
+				<Text
+					as="dd"
+					variant="headline-lg"
+					className="text-headline-md text-primary tabular-nums lg:text-headline-lg"
+				>
 					{value}
 				</Text>
 				{footnote && (
@@ -45,7 +49,7 @@ export default function StatCard({
 			<span
 				aria-hidden
 				className={cn(
-					"flex size-10 shrink-0 items-center justify-center rounded-lg",
+					"flex size-8 shrink-0 lg:size-10 items-center justify-center rounded-lg",
 					iconTones[tone],
 				)}
 			>
