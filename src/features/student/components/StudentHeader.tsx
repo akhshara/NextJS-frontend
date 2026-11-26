@@ -16,11 +16,11 @@ export default function StudentHeader() {
 	const signOut = useStudentSignOut();
 
 	return (
-		<header className="sticky top-0 z-30 border-b bg-card/85 backdrop-blur">
-			<Container className="flex h-16 items-center gap-6">
+		<header className="sticky top-0 z-30 border-b bg-card/95 pt-[env(safe-area-inset-top)] backdrop-blur md:bg-card/85">
+			<Container className="flex h-14 items-center gap-6 md:h-16">
 				<Brand />
 				<StudentNav className="hidden md:block" />
-				<div className="ml-auto flex items-center gap-3">
+				<div className="ml-auto flex items-center gap-1 md:gap-3">
 					<Avatar name={student.full_name} size="sm" />
 					<div className="hidden text-right sm:block">
 						<Text variant="label-md">{student.full_name}</Text>
@@ -31,15 +31,13 @@ export default function StudentHeader() {
 					<IconButton
 						variant="ghost"
 						label="Sign out"
+						className="max-md:size-11"
 						onClick={() => signOut.mutate()}
 						disabled={signOut.isPending}
 					>
 						<LogOut />
 					</IconButton>
 				</div>
-			</Container>
-			<Container className="border-t py-2 md:hidden">
-				<StudentNav />
 			</Container>
 		</header>
 	);

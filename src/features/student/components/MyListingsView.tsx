@@ -6,7 +6,6 @@ import { useState } from "react";
 
 import EmptyState from "@/components/feedback/EmptyState";
 import QueryState from "@/components/feedback/QueryState";
-import PageHeader from "@/components/layout/PageHeader";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FilterChips } from "@/components/ui/filter-chips";
@@ -43,14 +42,16 @@ export default function MyListingsView() {
 
 	return (
 		<>
-			<PageHeader
-				title="My listings"
-				description="Everything you have put up for sale, swap or donation. Withdraw a book to hide it without losing its history."
-				actions={<ListBookButton />}
-			/>
+			<header className="flex flex-wrap items-center justify-between gap-3">
+				<Text as="h1" variant="headline-md" className="font-bold text-primary md:text-headline-lg">
+					My listings
+				</Text>
+				<ListBookButton size="lg" className="px-3 md:px-6" />
+			</header>
 
 			<FilterChips
 				label="Status"
+				className="max-md:[&>button]:h-11"
 				options={statusFilters}
 				value={status}
 				onChange={(value) => {
@@ -77,7 +78,7 @@ export default function MyListingsView() {
 					/>
 				) : (
 					<>
-						<ul className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+						<ul className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
 							{listings.map((listing) => (
 								<li key={listing.id}>
 									<OwnListing listing={listing} />

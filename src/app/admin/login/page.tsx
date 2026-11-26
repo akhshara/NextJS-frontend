@@ -54,8 +54,8 @@ export default function AdminLoginPage() {
 	}
 
 	return (
-		<main className="flex min-h-screen items-center justify-center bg-background p-4">
-			<Card className="w-full max-w-sm gap-6 p-8">
+		<main className="flex min-h-dvh items-center justify-center bg-background p-4">
+			<Card className="w-full max-w-sm gap-5 rounded-2xl p-5 sm:gap-6 sm:p-8">
 				<AdminBrand />
 				<div className="space-y-1">
 					<Text as="h1" variant="headline-md" tone="primary">
@@ -63,7 +63,10 @@ export default function AdminLoginPage() {
 					</Text>
 					<Text tone="muted">Only the platform&apos;s super admin can sign in here.</Text>
 				</div>
-				<form className="space-y-5" onSubmit={handleSubmit}>
+				<form
+					className="space-y-5 max-sm:[&_input]:min-h-11 max-sm:[&_input]:text-base"
+					onSubmit={handleSubmit}
+				>
 					<FormInput
 						id="email"
 						label="Email"

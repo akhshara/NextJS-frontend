@@ -5,11 +5,11 @@ import { LogOut, Server } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { IconButton } from "@/components/ui/icon-button";
 import { Text } from "@/components/ui/typography";
 
 import AdminBrand from "./AdminBrand";
 import { useAdminSession, useSignOut } from "./admin-session";
-import ConsoleNav from "./ConsoleNav";
 
 const environment = process.env.NEXT_PUBLIC_APP_ENV ?? "development";
 
@@ -18,8 +18,8 @@ export default function TopBar() {
 	const signOut = useSignOut();
 
 	return (
-		<header className="sticky top-0 z-30 border-b bg-card/85 backdrop-blur">
-			<div className="flex h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
+		<header className="sticky top-0 z-30 border-b bg-card/95 pt-[env(safe-area-inset-top)] backdrop-blur">
+			<div className="flex h-14 lg:h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
 				<div className="lg:hidden">
 					<AdminBrand />
 				</div>
@@ -39,7 +39,17 @@ export default function TopBar() {
 								Super admin
 							</Text>
 						</div>
+						<IconButton
+							label="Sign out"
+							variant="ghost"
+							className="size-11 lg:hidden"
+							onClick={() => signOut.mutate()}
+							disabled={signOut.isPending}
+						>
+							<LogOut />
+						</IconButton>
 						<Button
+							className="hidden lg:inline-flex"
 							variant="ghost"
 							size="sm"
 							onClick={() => signOut.mutate()}
@@ -50,9 +60,6 @@ export default function TopBar() {
 						</Button>
 					</div>
 				)}
-			</div>
-			<div className="border-t px-4 py-2 sm:px-6 lg:hidden">
-				<ConsoleNav orientation="horizontal" />
 			</div>
 		</header>
 	);

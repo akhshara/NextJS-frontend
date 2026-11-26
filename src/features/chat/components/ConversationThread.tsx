@@ -45,13 +45,24 @@ export default function ConversationThread({ id, studentId }: ConversationThread
 		if (newestId !== undefined && element) element.scrollTop = element.scrollHeight;
 	}, [newestId]);
 
+	const back = (
+		<IconButton asChild variant="ghost" label="All messages" className="size-11 lg:hidden">
+			<Link href={STUDENT_MESSAGES}>
+				<ArrowLeft />
+			</Link>
+		</IconButton>
+	);
+
 	if (!conversation.data) {
 		return (
-			<QueryState
-				isPending={conversation.isPending}
-				error={conversation.error}
-				onRetry={conversation.refetch}
-			/>
+			<>
+				<div className="border-b px-2 py-1 lg:hidden">{back}</div>
+				<QueryState
+					isPending={conversation.isPending}
+					error={conversation.error}
+					onRetry={conversation.refetch}
+				/>
+			</>
 		);
 	}
 
@@ -62,18 +73,8 @@ export default function ConversationThread({ id, studentId }: ConversationThread
 
 	return (
 		<section aria-label={`Conversation with ${other.full_name}`} className="flex h-full flex-col">
-			<header className="flex items-center gap-3 border-b px-4 py-3">
-				<IconButton
-					asChild
-					variant="ghost"
-					size="icon-sm"
-					label="All messages"
-					className="lg:hidden"
-				>
-					<Link href={STUDENT_MESSAGES}>
-						<ArrowLeft />
-					</Link>
-				</IconButton>
+			<header className="flex items-center gap-2 border-b px-2 py-2 sm:gap-3 sm:px-4 lg:py-3">
+				{back}
 				<Avatar name={other.full_name} size="md" />
 				<div className="min-w-0 flex-1">
 					<Text variant="label-lg" className="truncate">
@@ -88,7 +89,7 @@ export default function ConversationThread({ id, studentId }: ConversationThread
 				</Badge>
 			</header>
 
-			<div ref={scroller} className="flex-1 space-y-2 overflow-y-auto px-4 py-4">
+			<div ref={scroller} className="min-h-0 flex-1 space-y-2 overflow-y-auto px-4 py-4">
 				{messages.hasNextPage && (
 					<div className="flex justify-center pb-2">
 						<Button

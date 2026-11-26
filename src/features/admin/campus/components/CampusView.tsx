@@ -17,13 +17,13 @@ function EmailDomains() {
 		<Card className="gap-4 p-5">
 			<div className="flex items-start gap-3">
 				<AtSign aria-hidden className="mt-0.5 size-5 shrink-0 text-primary" />
-				<div className="space-y-1">
+				<div className="min-w-0 space-y-1">
 					<Text as="h2" variant="label-lg">
 						Sign-up email domains
 					</Text>
 					<Text variant="body-sm" tone="muted">
 						Only addresses on these domains, and their subdomains, can register. They are set on the
-						server with <code className="font-mono">UNIVERSITY_EMAIL_DOMAINS</code>.
+						server with <code className="wrap-anywhere font-mono">UNIVERSITY_EMAIL_DOMAINS</code>.
 					</Text>
 				</div>
 			</div>
@@ -32,7 +32,7 @@ function EmailDomains() {
 				<ul className="flex flex-wrap gap-2">
 					{query.data.email_domains.map((domain) => (
 						<li key={domain}>
-							<Badge tone="primary" className="font-mono">
+							<Badge tone="primary" className="wrap-anywhere font-mono">
 								@{domain}
 							</Badge>
 						</li>
